@@ -163,6 +163,7 @@ section {
 
 .nav-link:hover, .nav-link.active {
     color: white;
+    text-decoration: none;
 }
 
 .nav-link::after {
