@@ -162,7 +162,7 @@ section {
 }
 
 .nav-link:hover, .nav-link.active {
-    color: var(--secondary);
+    color: white;
 }
 
 .nav-link::after {
