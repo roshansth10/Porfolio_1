@@ -761,3 +761,12 @@ section {
         margin-bottom: 40px;
     }
 }
+
+@media (max-width: 600px) {
+    body {
+        overflow-x: hidden; /* Hides horizontal scroll */
+    }
+    .about-image img {
+        width: 100% !important; /* Forces full width */
+    }
+}
