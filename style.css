@@ -138,7 +138,10 @@ section {
     font-weight: 700;
     color: var(--light);
 }
-
+.logo a {
+  text-decoration: none !important;
+  color: inherit;
+}
 .logo-bracket {
     color: var(--secondary);
     margin: 0 5px;
