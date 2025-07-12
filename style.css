@@ -762,11 +762,11 @@ section {
     }
 }
 
-@media (max-width: 600px) {
-    body {
-        overflow-x: hidden; /* Hides horizontal scroll */
+@media (max-width: 768px) {
+    header {
+        display: block !important;
     }
-    .about-image img {
-        width: 100% !important; /* Forces full width */
+   nav, .logo{
+       text-align:center !important;
     }
 }
