@@ -318,12 +318,12 @@ section {
 
 .about-image {
     flex: 1;
-    min-width: 300px;
+    min-width: 250px;
     text-align: center;
 }
 
 .about-image img {
-    max-width: 100%;
+    max-width: 80%;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
