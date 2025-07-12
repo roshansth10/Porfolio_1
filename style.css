@@ -318,7 +318,7 @@ section {
 
 .about-image {
     flex: 1;
-    min-width: 500px;
+    min-width: 300px;
     text-align: center;
 }
 
