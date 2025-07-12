@@ -189,3 +189,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Animate skill bars when scrolled to
+function animateSkills() {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    
+    skillBars.forEach(bar => {
+        const level = bar.getAttribute('data-level');
+        bar.style.width = level + '%';
+    });
+}
+
+// Run animation when skills section is in view
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateSkills();
+        }
+    });
+}, {threshold: 0.5});
+
+const skillsSection = document.querySelector('#skills');
+if (skillsSection) {
+    observer.observe(skillsSection);
+};
