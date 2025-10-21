@@ -95,15 +95,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     
-    hamburger.addEventListener('click', function() {
-        this.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    }
     
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            if (navLinks.classList.contains('active')) {
+            if (navLinks && navLinks.classList.contains('active')) {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
             }
@@ -137,29 +139,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Header scroll effect
     const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Activate skill bars on scroll
-    const skillBars = document.querySelectorAll('.skill-progress');
-    function activateSkillBars() {
-        skillBars.forEach(bar => {
-            const level = bar.getAttribute('data-level');
-            bar.style.width = '0';
-            
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    bar.style.width = level + '%';
-                    observer.unobserve(bar);
-                }
-            }, { threshold: 0.5 });
-            
-            observer.observe(bar);
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
     }
 
@@ -168,103 +154,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set current year in footer
     const currentYear = new Date().getFullYear();
-    document.getElementById('current-year').textContent = currentYear;
-
-// Contact Form Handler with Debugging
-document.getElementById("contact-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    console.log("✅ Form submit event triggered");
-
-    // Get form values
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
-    
-    // Debug: Check if elements exist
-    console.log("Name element:", document.getElementById("name"));
-    console.log("Email element:", document.getElementById("email"));
-    console.log("Message element:", document.getElementById("message"));
-    
-    // Get status element with better error handling
-    let status = document.getElementById("form-status");
-    console.log("Status element:", status);
-    
-    if (!status) {
-        console.error("❌ form-status element not found! Creating one...");
-        // Create status element dynamically
-        status = document.createElement("div");
-        status.id = "form-status";
-        status.style.marginTop = "15px";
-        status.style.padding = "10px";
-        status.style.borderRadius = "5px";
-        this.appendChild(status);
-        console.log("✅ Created form-status element:", status);
+    const currentYearElement = document.getElementById('current-year');
+    if (currentYearElement) {
+        currentYearElement.textContent = currentYear;
     }
 
-    // Validation
-    if (!name || !email || !message) {
-        console.log("❌ Validation failed - empty fields");
-        status.textContent = "Please fill all fields.";
-        status.style.color = "orange";
-        return;
-    }
+    // EmailJS Contact Form Submission
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", function (e) {
+            e.preventDefault();
 
-    console.log("✅ Validation passed");
-    console.log("Form data:", { name, email, message });
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const message = document.getElementById("message").value.trim();
+            const status = document.getElementById("form-status");
 
-    // Show sending state
-    status.textContent = "⏳ Sending message...";
-    status.style.color = "blue";
+            if (!name || !email || !message) {
+                if (status) {
+                    status.textContent = "Please fill all fields.";
+                    status.style.color = "orange";
+                }
+                return;
+            }
 
-    // EmailJS configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
-     const serviceID = "service_9mb4ye9";
-        const templateID = "template_cjzsp5a";
-        const publicKey = "nMtSbrp_D1y25PI_J";
+            // EmailJS configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
+            const serviceID = "your_service_id";
+            const templateID = "your_template_id";
+            const publicKey = "your_public_key";
 
-    console.log("EmailJS config:", { serviceID, templateID, publicKey });
+            emailjs.init(publicKey);
 
-    // Check if EmailJS is loaded
-    if (typeof emailjs === 'undefined') {
-        console.error("❌ EmailJS not loaded!");
-        status.textContent = "❌ Email service not loaded. Please refresh the page.";
-        status.style.color = "red";
-        return;
-    }
+            const params = { name, email, message };
 
-    console.log("✅ EmailJS loaded, initializing...");
-
-    try {
-        // Initialize EmailJS
-        emailjs.init(publicKey);
-        
-        const params = { 
-            from_name: name,
-            reply_to: email,
-            message: message
-        };
-
-        console.log("📧 Sending email with params:", params);
-
-        emailjs.send(serviceID, templateID, params)
-            .then((response) => {
-                console.log("✅ Email sent successfully!", response);
-                status.textContent = "✅ Message sent successfully!";
-                status.style.color = "#0aff9d";
-                document.getElementById("contact-form").reset();
-            })
-            .catch((error) => {
-                console.error("❌ EmailJS error:", error);
-                status.textContent = "❌ Failed to send message. Please try again.";
-                status.style.color = "red";
-            });
-    } catch (error) {
-        console.error("❌ Unexpected error:", error);
-        status.textContent = "❌ An unexpected error occurred.";
-        status.style.color = "red";
+            emailjs.send(serviceID, templateID, params)
+                .then(() => {
+                    if (status) {
+                        status.textContent = "✅ Message sent successfully!";
+                        status.style.color = "#0aff9d";
+                    }
+                    contactForm.reset();
+                })
+                .catch((error) => {
+                    console.error("EmailJS error:", error);
+                    if (status) {
+                        status.textContent = "❌ Failed to send message. Please try again.";
+                        status.style.color = "red";
+                    }
+                });
+        });
     }
 });
+
+// Skill bars functions
+function activateSkillBars() {
+    const skillBars = document.querySelectorAll('.skill-progress');
     
-// Animate skill bars when scrolled to
+    skillBars.forEach(bar => {
+        const level = bar.getAttribute('data-level');
+        bar.style.width = '0';
+        
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                setTimeout(() => {
+                    bar.style.width = level + '%';
+                }, 300);
+                observer.unobserve(bar);
+            }
+        }, { threshold: 0.5 });
+        
+        observer.observe(bar);
+    });
+}
+
 function animateSkills() {
     const skillBars = document.querySelectorAll('.skill-progress');
     
@@ -286,4 +248,4 @@ const observer = new IntersectionObserver((entries) => {
 const skillsSection = document.querySelector('#skills');
 if (skillsSection) {
     observer.observe(skillsSection);
-};
+}
