@@ -170,24 +170,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentYear = new Date().getFullYear();
     document.getElementById('current-year').textContent = currentYear;
 
-    // Form submission
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Here you would typically send the data to a server
-            console.log('Form submitted:', data);
-            
-            // Show success message
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        });
-    }
+    // EmailJS Contact Form Submission
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const message = document.getElementById("message").value.trim();
+        const status = document.getElementById("form-status");
+
+        if (!name || !email || !message) {
+            status.textContent = "Please fill all fields.";
+            status.style.color = "orange";
+            return;
+        }
+
+        // EmailJS configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
+        const serviceID = "service_9mb4ye9";
+        const templateID = "template_cjzsp5a";
+        const publicKey = "nMtSbrp_D1y25PI_J";
+
+        emailjs.init(publicKey);
+
+        const params = { name, email, message };
+
+        emailjs.send(serviceID, templateID, params)
+            .then(() => {
+                status.textContent = "✅ Message sent successfully!";
+                status.style.color = "#0aff9d";
+                document.getElementById("contact-form").reset();
+            })
+            .catch((error) => {
+                console.error("EmailJS error:", error);
+                status.textContent = "❌ Failed to send message. Please try again.";
+                status.style.color = "red";
+            });
+    });
 });
 
 // Animate skill bars when scrolled to
