@@ -844,3 +844,14 @@ section {
         min-width: 100%;
     }
 }
+.contact-form button[type="submit"] {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* If you have any overlay or pseudo-elements that might be blocking clicks */
+.contact-form button::before,
+.contact-form button::after {
+    pointer-events: none;
+}
