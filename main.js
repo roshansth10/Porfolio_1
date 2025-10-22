@@ -179,9 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // EmailJS configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
-            const serviceID = "your_service_id";
-            const templateID = "your_template_id";
-            const publicKey = "your_public_key";
+            const serviceID = "service_9mb4ye9";
+            const templateID = "template_cjzsp5a";
+            const publicKey = "nMtSbrp_D1y25PI_J";
 
             emailjs.init(publicKey);
 
@@ -249,3 +249,4 @@ const skillsSection = document.querySelector('#skills');
 if (skillsSection) {
     observer.observe(skillsSection);
 }
+
